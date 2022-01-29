@@ -12,6 +12,7 @@ class Test
 {
 public:
     Test();
+    static void testAll();
     static void testBruce();
     static void testDivideAndConquer2D();
 };
