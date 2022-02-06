@@ -2,6 +2,6 @@
 #include "test.h"
 int main(int argc, char *argv[])
 {
-    Test::testAll();
+    Test::testRandomizedIncremental2D();
     return 0;
 }

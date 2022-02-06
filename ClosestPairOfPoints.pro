@@ -6,6 +6,8 @@ OBJECTS_DIR=$${PWD}/build
 QMAKE_CXXFLAGS += /bigobj
 HEADERS += \
     DivideAndConquer2D.h \
+    RandomizedIncremental2D.h \
+    basic.h \
     test.h
 
 SOURCES += \

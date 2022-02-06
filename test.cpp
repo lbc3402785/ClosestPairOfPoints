@@ -41,13 +41,9 @@ void Test::testAll() {
     // Note: It is important to generate a new set of random numbers for each trial in
     //  order to test the algorithms' run times on different inputs.
 
-    for (int j = 0; j < g; j++)
-    {
-        P[j].x = (unsigned int)(rand() + rand() - 1);
-        P[j].y = (unsigned int)(rand() + rand() - 1);
-    }
+
     //Heading for output
-    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Elements\t\tRun Time\t\tTrials" << std::endl;
+
     Test::testBruce();
     Test::testDivideAndConquer2D();
 }
@@ -65,10 +61,15 @@ void Test::testBruce()
     int i1, i2;
     double dst;
     //Loop to run multiple trials
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Index\t\tIndex\t\tdst" << std::endl;
     for (int i = 0; i < trials; i++)
     {
         
-
+        for (int j = 0; j < g; j++)
+        {
+            P[j].x = (unsigned int)(rand() + rand() - 1);
+            P[j].y = (unsigned int)(rand() + rand() - 1);
+        }
         //Store startTime of algorithm execution
         auto startTime = std::chrono::high_resolution_clock::now();
 
@@ -88,7 +89,7 @@ void Test::testBruce()
 
     //Calculate average run time over all trials
     int averageTime = sumTime / trials;
-    
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Elements\t\tRun Time\t\tTrials" << std::endl;
     //Output results
     std::cout << g << "\t\t\t" << averageTime << "\t\t\t\t" << trials << std::endl;
 
@@ -106,10 +107,15 @@ void Test::testDivideAndConquer2D()
     int sumTime = 0; //Will be used to calculate the average
     int i1, i2;
     double dst;
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Index\t\tIndex\t\tdst" << std::endl;
     //Loop to run multiple trials
     for (int i = 0; i < trials; i++)
     {
-
+        for (int j = 0; j < g; j++)
+        {
+            P[j].x = (unsigned int)(rand() + rand() - 1);
+            P[j].y = (unsigned int)(rand() + rand() - 1);
+        }
 
         //Store startTime of algorithm execution
         auto startTime = std::chrono::high_resolution_clock::now();
@@ -127,9 +133,24 @@ void Test::testDivideAndConquer2D()
 
     //Calculate average run time over all trials
     int averageTime = sumTime / trials;
-
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Elements\t\tRun Time\t\tTrials" << std::endl;
     //Output results
     std::cout << g << "\t\t\t" << averageTime << "\t\t\t\t" << trials << std::endl;
+
+}
+
+void Test::testRandomizedIncremental2D()
+{
+    //Initialize seed for random number generator
+    srand(time(NULL));
+    int sumTime = 0; //Will be used to calculate the average
+    for (int j = 0; j < g; j++)
+    {
+        P[j].x = (unsigned int)(rand() + rand() - 1);
+        P[j].y = (unsigned int)(rand() + rand() - 1);
+    }
+    RandomizedIncrement2D<Point2D<double>> ran2D(P,g);
+    RandomizedIncrement2D<Point2D<double>>::Cell *c=ran2D.locateCell(ran2D.g,P[0]);
 
 }
 
