@@ -20,7 +20,7 @@ int g = 20000;
 
 
 //Enter number of trials
-int trials = 10;
+int trials = 2;
 
 /********************************************************************************************
 Struct, function and array declarations.
@@ -40,12 +40,30 @@ void Test::testAll() {
     //  the arrays will have distinct values.
     // Note: It is important to generate a new set of random numbers for each trial in
     //  order to test the algorithms' run times on different inputs.
+    int i1, i2;
+    double dst;
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Index\t\tIndex\t\tdst" << std::endl;
+    for (int i = 0; i < trials; i++)
+    {
 
-
+        for (int j = 0; j < g; j++)
+        {
+            P[j].x = (unsigned int)(rand() + rand() - 1);
+            P[j].y = (unsigned int)(rand() + rand() - 1);
+        }
+        std::tie(i1, i2, dst) = bruteForce(P, g);
+        std::cout << i1 << "\t\t\t" << i2 << "\t\t\t\t" << dst << std::endl;
+        DivideAndConquer2D<Point2D<double>> divide(P, g);
+        std::tie(i1, i2, dst) = divide.closestPair();
+        std::cout << i1 << "\t\t\t" << i2 << "\t\t\t\t" << dst << std::endl;
+        RandomizedIncrement2D<Point2D<double>> ran2D(P, g);
+        std::tie(i1, i2, dst) = ran2D.closestPair();
+        std::cout << i1 << "\t\t\t" << i2 << "\t\t\t\t" << dst << std::endl;
+    }
+    std::cout << "========" << std::endl;
     //Heading for output
 
-    Test::testBruce();
-    Test::testDivideAndConquer2D();
+    
 }
 
 /********************************************************************************************
@@ -143,14 +161,38 @@ void Test::testRandomizedIncremental2D()
 {
     //Initialize seed for random number generator
     srand(time(NULL));
+
+
+
     int sumTime = 0; //Will be used to calculate the average
-    for (int j = 0; j < g; j++)
+    int i1, i2;
+    double dst;
+    std::cout << std::endl << "Results:" << std::endl << std::endl << "# Index\t\tIndex\t\tdst" << std::endl;
+    for (int i = 0; i < trials; i++)
     {
-        P[j].x = (unsigned int)(rand() + rand() - 1);
-        P[j].y = (unsigned int)(rand() + rand() - 1);
+        for (int j = 0; j < g; j++)
+        {
+            P[j].x = (unsigned int)(rand() + rand() - 1);
+            P[j].y = (unsigned int)(rand() + rand() - 1);
+        }
+
+        //Store startTime of algorithm execution
+        auto startTime = std::chrono::high_resolution_clock::now();
+        RandomizedIncrement2D<Point2D<double>> ran2D(P, g);
+        std::tie(i1, i2, dst) = ran2D.closestPair();
+
+        std::cout << i1 << "\t\t\t" << i2 << "\t\t\t\t" << dst << std::endl;
+        std::cout << P[i1].x << "," << P[i1].y  << std::endl;
+        std::cout << P[i2].x << "," << P[i2].y << std::endl;
+        //Store finishTime of algorithm execution and calculate runTime
+        auto finishTime = std::chrono::high_resolution_clock::now();
+        auto runTime = finishTime - startTime; //Execution time
+        long long microseconds = std::chrono::duration_cast<std::chrono::microseconds>(runTime).count();
+
+        sumTime += microseconds; //When loop exits, this will be the sum of all the trials
     }
-    RandomizedIncrement2D<Point2D<double>> ran2D(P,g);
-    RandomizedIncrement2D<Point2D<double>>::Cell *c=ran2D.locateCell(ran2D.g,P[0]);
+    
+    
 
 }
 
