@@ -11,16 +11,16 @@ bruteForce function
 *********************************************************************************************/
 //Computes the closest pair of points in P in a brute force manner - by computing the
 // distance each pair of points and returning the minimum distance.
-template<typename Point2DT>
-std::tuple<int, int, typename Point2DT::type> bruteForce(Point2DT* points,int size)
+template<typename PointDT>
+std::tuple<int, int, typename PointDT::type> bruteForce(PointDT* points,int size)
 {
     double min = DBL_MAX;
-    std::tuple<int, int, typename Point2DT::type> result;
+    std::tuple<int, int, typename PointDT::type> result;
     for (int i = 0; i < size-1; ++i)
     {
         for (int j = i + 1; j < size; j++)
         {
-            typename Point2DT::type d = dist<Point2DT>(points[i], points[j]);
+            typename PointDT::type d = distance<PointDT>(points[i], points[j]);
             if (d < min)
             {
 
@@ -44,7 +44,7 @@ std::tuple<int,int,typename Point2DT::type> bruteForce(Point2DT* points,std::vec
         {
             int k = ix[i];
             int l = ix[j];
-            typename Point2DT::type d=dist<Point2DT>(points[k], points[l]);
+            typename Point2DT::type d=distance<Point2DT>(points[k], points[l]);
             if ( d< min)
             {
 
@@ -59,13 +59,13 @@ std::tuple<int,int,typename Point2DT::type> bruteForce(Point2DT* points,std::vec
 }
 template<typename Point2DT>
 class DivideAndConquer2D{
-private:
+public:
     std::vector<Point2DT> points;
     size_t size;
 public:
     DivideAndConquer2D(Point2DT* input, int n):size(n) {
-        points.resize(n);
-        memcpy(points.data(), input, sizeof(Point2DT) * n);
+        std::vector<Point2DT> tmp(input,input+n);
+        points=tmp;
     }
     /********************************************************************************************
     SClosest function
@@ -83,10 +83,10 @@ public:
         for (int i = 0; i < size-1; i++)
         {
             int k = S[i];
-            for (int j = i + 1; j < size && (points[k].y - points[S[j]].y) < min; j++)
+            for (int j = i + 1; j < size && (points[k].y() - points[S[j]].y()) < min; j++)
             {
                 int l = S[j];
-                typename Point2DT::type dij=dist(points[k], points[l]);
+                typename Point2DT::type dij=distance(points[k], points[l]);
                 if (dij < min)
                 {
                     std::get<0>(result) = k;
@@ -123,7 +123,7 @@ public:
 
         for (int i = 0; i <iy.size(); i++) {
             int index = iy[i];
-            if (points[index].x <= midPoint.x) {
+            if (points[index].x() <= midPoint.x()) {
                 Ly.push_back(index);
             }
             else {
@@ -173,13 +173,13 @@ public:
         {
             long long int abso = 0;
             int index = iy[i];
-            if ((points[index].x - midPoint.x) < 0)
+            if ((points[index].x() - midPoint.x()) < 0)
             {
-                abso = -(points[index].x - midPoint.x);
+                abso = -(points[index].x() - midPoint.x());
             }
             else
             {
-                abso = (points[index].x - midPoint.x);
+                abso = (points[index].x() - midPoint.x());
             }
 
             if (abso < d)
@@ -205,8 +205,8 @@ public:
         std::vector<int> iy(size,0);
         std::iota(ix.begin(), ix.end(), 0);//递增赋值
         iota(iy.begin(), iy.end(), 0);//递增赋值
-        sort(ix.begin(), ix.end(), [&](int a, int b) { return points[a].x < points[b].x; });//此处对数据判断，然后对序号排列
-        sort(iy.begin(), iy.end(), [&](int a, int b) { return points[a].x < points[b].x; });//此处对数据判断，然后对序号排列
+        sort(ix.begin(), ix.end(), [&](int a, int b) { return points[a].x() < points[b].x(); });//此处对数据判断，然后对序号排列
+        sort(iy.begin(), iy.end(), [&](int a, int b) { return points[a].x() < points[b].x(); });//此处对数据判断，然后对序号排列
         //Call closestPairRec to find the smallest distance
         return closestPairRec(ix, iy,0,size-1);
     }

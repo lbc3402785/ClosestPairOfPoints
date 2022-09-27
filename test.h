@@ -1,13 +1,7 @@
 #ifndef TEST_H
 #define TEST_H
-#include <RandomizedIncremental2D.h>
+#include <RandomizedIncrementalD.h>
 //A structure to represent a point in a plane
-template <typename T>
-struct Point2D
-{
-    T x, y;
-    typedef T type;
-};
 class Test
 {
 public:
@@ -16,6 +10,7 @@ public:
     static void testBruce();
     static void testDivideAndConquer2D();
     static void testRandomizedIncremental2D();
+    static void testRandomizedIncremental3D();
 };
 
 #endif // TEST_H
